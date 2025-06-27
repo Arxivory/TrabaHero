@@ -4,56 +4,43 @@
      <!-- clean the code -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Dashboard</title>
+    <title>TrabaHero</title>
     <link rel = "stylesheet" href = "style.css">
 </head>
 <body>
     <div class="sidebar">
         <div class="logo">
             <div class="logo-icon"></div>
-            <span class="logo-text">Dashboard</span>
+            <span class="logo-text">TrabaHero</span>
         </div>
         
         <nav>
             <a href="#" class="nav-item active">
                 <div class="nav-icon"></div>
-                Dashboard
+                Home
             </a>
             <a href="#" class="nav-item">
                 <div class="nav-icon"></div>
-                Inbox
+                Documents
                 <span class="notification-badge">1</span>
             </a>
             <a href="#" class="nav-item">
                 <div class="nav-icon"></div>
-                Feed
+                Quests
                 <span class="notification-badge">•</span>
             </a>
             <a href="#" class="nav-item">
                 <div class="nav-icon"></div>
-                Staff
+                Chat
                 <span class="notification-badge">2</span>
             </a>
             <a href="#" class="nav-item">
                 <div class="nav-icon"></div>
-                Statistic
+                Guild
             </a>
             <a href="#" class="nav-item">
                 <div class="nav-icon"></div>
-                Folders
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                Mentoring
-                <span class="notification-badge">•</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                Querying
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                Celebrating
+                Profile
             </a>
         </nav>
 
@@ -67,7 +54,7 @@
     <div class="main-content">
         <div class="header">
             <div class="header-left">
-                <h1>Hello Creative! 👋</h1>
+                <h1>Hello User!</h1>
                 <div class="header-tabs">
                     <a href="#" class="tab active">Overview</a>
                     <a href="#" class="tab">Team Details</a>
@@ -80,7 +67,7 @@
             <div class="header-right">
                 <div class="user-profile">
                     <div class="avatar"></div>
-                    <span>Nathan Walker</span>
+                    <span>User's Namer</span>
                 </div>
                 <button class="new-card-btn">+ New Card</button>
             </div>
@@ -204,49 +191,6 @@
         </div>
     </div>
 
-    <script>
-        // Add some subtle animations and interactions
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate cards on hover
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                });
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-
-            // Animate navigation items
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-
-            // Animate buttons
-            const buttons = document.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 150);
-                });
-            });
-
-            // Simulate real-time updates
-            setInterval(() => {
-                const percentage = document.querySelector('.chart-percentage');
-                const currentValue = parseInt(percentage.textContent);
-                const newValue = Math.max(70, Math.min(80, currentValue + (Math.random() - 0.5) * 2));
-                percentage.textContent = Math.round(newValue) + '%';
-            }, 5000);
-        });
-    </script>
+    <script href = "script.js"></script>
 </body>
 </html>
