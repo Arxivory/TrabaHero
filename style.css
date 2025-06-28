@@ -217,8 +217,9 @@ nav {
 }
 
 .tab.active {
-    color: rgb(38, 34, 34);
-    border-bottom-color: rgb(57, 52, 52);
+    color: #ff6b9d;
+    border-bottom-color: #ff6b9d;
+    font-weight: bold;
 }
 
 .header-right {
@@ -559,4 +560,18 @@ nav {
         overflow-x: auto;
         padding-bottom: var(--spacing-sm);
     }
+}
+
+::-webkit-scrollbar{
+    width:20px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background: #e55a87;
+    border-radius: 10px;
 }

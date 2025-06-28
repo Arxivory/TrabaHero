@@ -1,0 +1,127 @@
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('fonts/PressStart2P-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.calendar-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+.calendar-container:hover {
+    transform: translateY(-5px);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.nav-btn {
+    background: linear-gradient(135deg, #ffebf2, #e97e9c);
+    border: none;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0px 3px 3px 0 rgba(0, 0, 0, 0.234), 0px -3px 3px 0 rgba(255, 255, 255, 0.526);
+
+}
+
+.nav-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.month-year {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    min-width: 200px;
+    font-family: 'PressStart2P', sans-serif;
+    text-shadow: -2px 2px 0 #ff6b9d;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.day-header {
+    background: #e97e9c;
+    color: white;
+    padding: 15px 5px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.day-cell {
+    background: white;
+    padding: 15px 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    position: relative;
+}
+
+.day-cell:hover {
+    background: linear-gradient(135deg, #ffebf2, #e97e9c);
+    color: white;
+    transform: scale(1.05);
+}
+
+.day-cell.other-month {
+    color: #ccc;
+    background: #f9f9f9;
+}
+
+.day-cell.other-month:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #999;
+}
+
+.day-cell.today {
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.day-cell.today:hover {
+    background: linear-gradient(135deg, #ffebf2, #e97e9c);
+}
+
+.day-cell.selected {
+    background: linear-gradient(45deg, #dd9ee8, #9765c9);
+    color: white;
+    font-weight: bold;
+}
