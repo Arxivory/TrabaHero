@@ -145,10 +145,10 @@ body {
     margin-bottom: 30px;
 }
 
-.header-left h1 {
-    color: rgb(141, 124, 124);
-    font-size: 32px;
-    font-weight: 700;
+.text-color {
+    color: #333;
+    /* font-size: 32px;
+    font-weight: 700; */
     margin-bottom: 10px;
     font-family: 'PressStart2P', sans-serif;
     text-shadow: -2px 2px 0 #ff6b9d;;
