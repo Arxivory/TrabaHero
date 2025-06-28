@@ -1,0 +1,39 @@
+:root {
+    --primary-color: #ff6b9d;
+    --background-gradient: linear-gradient(135deg, #ffffff 0%, #ffc8d8 50%, #b659aa 100%);
+    --card-background: rgba(255, 224, 224, 0.95);
+    --shadow-card: 0px 3px 3px 0 rgba(0, 0, 0, 0.234), 0px -3px 3px 0 rgba(255, 255, 255, 0.526);
+    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+    --radius-md: 15px;
+    --text-primary: #333;
+}
+
+.quests-map {
+    position: relative;
+    bottom: 3rem;
+    height: 80%;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+}
+
+.controls-button {
+    min-width: 40px;
+    min-height: 30px;
+    padding: 10px;
+    background-color: var(--card-background);
+    font-weight: bolder;
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    color: var(--text-primary);
+    transition: 0.3s ease;
+}
+
+.controls-button:hover {
+    box-shadow: var(--shadow-hover);
+    cursor: pointer;
+    transform: translateY(-5px);
+}
