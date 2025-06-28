@@ -192,3 +192,129 @@
     opacity: 0.6;
     text-decoration: line-through;
 }
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: var(--text-primary);
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid rgba(255, 107, 157, 0.2);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.task-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.task-title-input,
+.task-desc-input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid rgba(255, 107, 157, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+}
+
+.task-title-input {
+    min-width: 150px;
+}
+
+.remove-task-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.remove-task-btn:hover {
+    background: #c0392b;
+}
+
+.add-task-btn {
+    background: rgba(255, 107, 157, 0.1);
+    color: var(--primary-color);
+    border: 2px dashed var(--primary-color);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.add-task-btn:hover {
+    background: rgba(255, 107, 157, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 107, 157, 0.2);
+}
+
+.cancel-btn {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid rgba(255, 107, 157, 0.3);
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 107, 157, 0.1);
+    color: var(--primary-color);
+}
+
+.submit-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}

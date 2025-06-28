@@ -465,24 +465,35 @@ function openQuestModal(quest) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('questModal');
+    const addQuestModal = document.getElementById('addQuestModal');
     const closeBtn = document.querySelector('.close');
+    const addQuestClose = document.getElementById('addQuestClose');
     
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
+    });
+    
+    addQuestClose.addEventListener('click', () => {
+        addQuestModal.style.display = 'none';
+        resetAddQuestForm();
     });
     
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
+        if (event.target === addQuestModal) {
+            addQuestModal.style.display = 'none';
+            resetAddQuestForm();
+        }
     });
 
-    const addQuestBtn = document.querySelector('.controls-button:first-child');
-    const deleteQuestBtn = document.querySelector('.controls-button:nth-child(2)');
+    const addQuestBtn = document.getElementById('addQuest');
+    const deleteQuestBtn = document.getElementById('deleteQuest');
     
     if (addQuestBtn) {
         addQuestBtn.addEventListener('click', () => {
-            console.log('Add quest clicked');
+            addQuestModal.style.display = 'block';
         });
     }
     
@@ -491,7 +502,145 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Delete quest clicked');
         });
     }
+
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const tasksContainer = document.getElementById('tasksInputContainer');
+    
+    addTaskBtn.addEventListener('click', () => {
+        addTaskInput();
+    });
+    
+    tasksContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove-task-btn')) {
+            e.target.closest('.task-input-group').remove();
+        }
+    });
+    
+    document.getElementById('cancelQuestBtn').addEventListener('click', () => {
+        addQuestModal.style.display = 'none';
+        resetAddQuestForm();
+    });
+    
+    document.getElementById('addQuestForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        handleAddQuest();
+    });
 });
+
+function addTaskInput() {
+    const tasksContainer = document.getElementById('tasksInputContainer');
+    const taskGroup = document.createElement('div');
+    taskGroup.className = 'task-input-group';
+    taskGroup.innerHTML = `
+        <input type="text" class="task-title-input" placeholder="Task title" required>
+        <input type="text" class="task-desc-input" placeholder="Task description">
+        <button type="button" class="remove-task-btn">×</button>
+    `;
+    tasksContainer.appendChild(taskGroup);
+}
+
+function resetAddQuestForm() {
+    document.getElementById('addQuestForm').reset();
+    const tasksContainer = document.getElementById('tasksInputContainer');
+
+    const taskGroups = tasksContainer.querySelectorAll('.task-input-group');
+    for (let i = 1; i < taskGroups.length; i++) {
+        taskGroups[i].remove();
+    }
+
+    const firstGroup = tasksContainer.querySelector('.task-input-group');
+    firstGroup.querySelectorAll('input').forEach(input => input.value = '');
+}
+
+function handleAddQuest() {
+    const title = document.getElementById('questTitleInput').value;
+    const description = document.getElementById('questDescInput').value;
+    
+    const taskGroups = document.querySelectorAll('.task-input-group');
+    const tasks = [];
+    let taskId = Date.now(); 
+    
+    taskGroups.forEach(group => {
+        const titleInput = group.querySelector('.task-title-input');
+        const descInput = group.querySelector('.task-desc-input');
+        
+        if (titleInput.value.trim()) {
+            tasks.push({
+                id: taskId++,
+                title: titleInput.value.trim(),
+                description: descInput.value.trim() || '',
+                completed: false
+            });
+        }
+    });
+    
+    if (tasks.length === 0) {
+        alert('Please add at least one task.');
+        return;
+    }
+    
+    const newQuest = {
+        id: Date.now(),
+        title: title,
+        description: description,
+        position: getRandomPosition(),
+        tasks: tasks,
+        isPersonal: true 
+    };
+    
+    questsData.push(newQuest);
+    
+    createSingleQuestPanel(newQuest);
+    
+    document.getElementById('addQuestModal').style.display = 'none';
+    resetAddQuestForm();
+    
+    console.log('Personal quest created:', newQuest);
+}
+
+function getRandomPosition() {
+    const angle = Math.random() * Math.PI * 2;
+    const radius = Math.random() * 15 + 5; 
+    return {
+        x: Math.cos(angle) * radius,
+        z: Math.sin(angle) * radius
+    };
+}
+
+function createSingleQuestPanel(quest) {
+    const panel = document.createElement('div');
+    panel.className = 'quest-panel';
+    panel.dataset.questId = quest.id;
+    
+    if (quest.isPersonal) {
+        panel.style.borderColor = '#3498db'; 
+    }
+    
+    const completedTasks = quest.tasks.filter(task => task.completed).length;
+    const totalTasks = quest.tasks.length;
+    const progress = (completedTasks / totalTasks) * 100;
+    
+    panel.innerHTML = `
+        <h3>${quest.title}${quest.isPersonal ? ' 👤' : ''}</h3>
+        <p>${quest.description}</p>
+        <div class="quest-progress">
+            <div class="quest-progress-fill" style="width: ${progress}%"></div>
+        </div>
+        <div class="quest-stats">
+            <span>${completedTasks}/${totalTasks} tasks</span>
+            <span>${Math.round(progress)}%</span>
+        </div>
+    `;
+    
+    panel.addEventListener('click', () => openQuestModal(quest));
+    
+    document.getElementById('container').appendChild(panel);
+    questPanels.push({
+        element: panel,
+        worldPosition: quest.position,
+        quest: quest
+    });
+}
 
 function animate() {
     requestAnimationFrame(animate);
