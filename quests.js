@@ -11,10 +11,10 @@ const questsData = [
         description: "Complete the company website redesign project",
         position: { x: 5, z: 8 },
         tasks: [
-            { id: 1, title: "Create wireframes", description: "Design basic layout structure", completed: true },
-            { id: 2, title: "UI Design", description: "Create visual design mockups", completed: true },
-            { id: 3, title: "Frontend Development", description: "Code the frontend interface", completed: false },
-            { id: 4, title: "Backend Integration", description: "Connect with backend APIs", completed: false }
+            { id: 1, title: "Create wireframes", description: "Design basic layout structure", completed: true, dueDate: "2025-06-20" },
+            { id: 2, title: "UI Design", description: "Create visual design mockups", completed: true, dueDate: "2025-06-25" },
+            { id: 3, title: "Frontend Development", description: "Code the frontend interface", completed: false, dueDate: "2025-07-10" },
+            { id: 4, title: "Backend Integration", description: "Connect with backend APIs", completed: false, dueDate: "2025-07-20" }
         ]
     },
     {
@@ -23,9 +23,9 @@ const questsData = [
         description: "Develop the mobile application",
         position: { x: -8, z: 12 },
         tasks: [
-            { id: 5, title: "Market Research", description: "Analyze target audience", completed: true },
-            { id: 6, title: "App Design", description: "Create mobile UI/UX", completed: false },
-            { id: 7, title: "Development", description: "Code the mobile app", completed: false }
+            { id: 5, title: "Market Research", description: "Analyze target audience", completed: true, dueDate: "2025-06-15" },
+            { id: 6, title: "App Design", description: "Create mobile UI/UX", completed: false, dueDate: "2025-07-05" },
+            { id: 7, title: "Development", description: "Code the mobile app", completed: false, dueDate: "2025-08-01" }
         ]
     },
     {
@@ -34,10 +34,10 @@ const questsData = [
         description: "Migrate legacy database to new system",
         position: { x: 12, z: -5 },
         tasks: [
-            { id: 8, title: "Data Backup", description: "Create complete backup", completed: true },
-            { id: 9, title: "Schema Design", description: "Design new database schema", completed: true },
-            { id: 10, title: "Data Migration", description: "Transfer data to new system", completed: false },
-            { id: 11, title: "Testing", description: "Verify data integrity", completed: false }
+            { id: 8, title: "Data Backup", description: "Create complete backup", completed: true, dueDate: "2025-06-18" },
+            { id: 9, title: "Schema Design", description: "Design new database schema", completed: true, dueDate: "2025-06-30" },
+            { id: 10, title: "Data Migration", description: "Transfer data to new system", completed: false, dueDate: "2025-07-15" },
+            { id: 11, title: "Testing", description: "Verify data integrity", completed: false, dueDate: "2025-07-25" }
         ]
     }
 ];
@@ -450,11 +450,15 @@ function openQuestModal(quest) {
     quest.tasks.forEach(task => {
         const taskElement = document.createElement('div');
         taskElement.className = `task-item ${task.completed ? 'task-completed' : ''}`;
+        
+        const dueDateInfo = task.dueDate ? formatDueDate(task.dueDate) : null;
+        
         taskElement.innerHTML = `
             <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} disabled>
             <div class="task-content">
                 <div class="task-title">${task.title}</div>
                 <div class="task-description">${task.description}</div>
+                ${dueDateInfo ? `<div class="task-due-date ${dueDateInfo.class}">📅 Due: ${dueDateInfo.text}</div>` : ''}
             </div>
         `;
         tasksList.appendChild(taskElement);
@@ -532,8 +536,11 @@ function addTaskInput() {
     const taskGroup = document.createElement('div');
     taskGroup.className = 'task-input-group';
     taskGroup.innerHTML = `
-        <input type="text" class="task-title-input" placeholder="Task title" required>
-        <input type="text" class="task-desc-input" placeholder="Task description">
+        <div class="task-input-column">
+            <input type="text" class="task-title-input" placeholder="Task title" required>
+            <input type="text" class="task-desc-input" placeholder="Task description">
+        </div>
+        <input type="date" class="task-date-input" title="Due date">
         <button type="button" class="remove-task-btn">×</button>
     `;
     tasksContainer.appendChild(taskGroup);
@@ -563,13 +570,15 @@ function handleAddQuest() {
     taskGroups.forEach(group => {
         const titleInput = group.querySelector('.task-title-input');
         const descInput = group.querySelector('.task-desc-input');
+        const dateInput = group.querySelector('.task-date-input');
         
         if (titleInput.value.trim()) {
             tasks.push({
                 id: taskId++,
                 title: titleInput.value.trim(),
                 description: descInput.value.trim() || '',
-                completed: false
+                completed: false,
+                dueDate: dateInput.value || null
             });
         }
     });
@@ -596,6 +605,26 @@ function handleAddQuest() {
     resetAddQuestForm();
     
     console.log('Personal quest created:', newQuest);
+}
+
+function formatDueDate(dateString) {
+    if (!dateString) return '';
+    
+    const dueDate = new Date(dateString);
+    const today = new Date();
+    const diffTime = dueDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    const options = { month: 'short', day: 'numeric' };
+    const formattedDate = dueDate.toLocaleDateString('en-US', options);
+    
+    if (diffDays < 0) {
+        return { text: `${formattedDate} (${Math.abs(diffDays)} days overdue)`, class: 'overdue' };
+    } else if (diffDays <= 3) {
+        return { text: `${formattedDate} (${diffDays} days left)`, class: 'due-soon' };
+    } else {
+        return { text: formattedDate, class: '' };
+    }
 }
 
 function getRandomPosition() {
