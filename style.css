@@ -191,13 +191,13 @@ nav {
     gap: var(--spacing-lg);
 }
 
-.header-left h1 {
-    color: rgb(141, 124, 124);
-    font-size: clamp(24px, 4vw, 32px);
+.text-color {
+    color: #333;
+    font-size: clamp(24px, 4vw, 24px);
     font-weight: 700;
     margin-bottom: var(--spacing-sm);
     font-family: 'PressStart2P', sans-serif;
-    text-shadow: -2px 2px 0 var(--primary-color);
+    text-shadow: -2px 2px 0 #ff6b9d;;
 }
 
 .header-tabs {
