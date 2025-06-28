@@ -2,8 +2,46 @@ let scene, camera, renderer, buildings = [], island;
 let mouse = { x: 0, y: 0 };
 let targetRotation = { x: 0, y: 0 };
 let currentRotation = { x: 0, y: 0 };
+let questPanels = [];
 
-// Color palette inspired by the image
+const questsData = [
+    {
+        id: 1,
+        title: "Website Redesign",
+        description: "Complete the company website redesign project",
+        position: { x: 5, z: 8 },
+        tasks: [
+            { id: 1, title: "Create wireframes", description: "Design basic layout structure", completed: true },
+            { id: 2, title: "UI Design", description: "Create visual design mockups", completed: true },
+            { id: 3, title: "Frontend Development", description: "Code the frontend interface", completed: false },
+            { id: 4, title: "Backend Integration", description: "Connect with backend APIs", completed: false }
+        ]
+    },
+    {
+        id: 2,
+        title: "Mobile App",
+        description: "Develop the mobile application",
+        position: { x: -8, z: 12 },
+        tasks: [
+            { id: 5, title: "Market Research", description: "Analyze target audience", completed: true },
+            { id: 6, title: "App Design", description: "Create mobile UI/UX", completed: false },
+            { id: 7, title: "Development", description: "Code the mobile app", completed: false }
+        ]
+    },
+    {
+        id: 3,
+        title: "Database Migration",
+        description: "Migrate legacy database to new system",
+        position: { x: 12, z: -5 },
+        tasks: [
+            { id: 8, title: "Data Backup", description: "Create complete backup", completed: true },
+            { id: 9, title: "Schema Design", description: "Design new database schema", completed: true },
+            { id: 10, title: "Data Migration", description: "Transfer data to new system", completed: false },
+            { id: 11, title: "Testing", description: "Verify data integrity", completed: false }
+        ]
+    }
+];
+
 const colors = {
     buildings: [
         0xFFE5B4, // Light peach
@@ -23,11 +61,9 @@ const colors = {
 };
 
 function init() {
-    // Scene setup
     scene = new THREE.Scene();
-    scene.background = null; // Transparent background to show the water
+    scene.background = null; 
     
-    // Camera setup for isometric view
     const aspect = window.innerWidth / window.innerHeight;
     const d = 20;
     camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000);
@@ -40,7 +76,7 @@ function init() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.setClearColor(0x000000, 0); // Transparent background
+    renderer.setClearColor(0x000000, 0); 
     document.getElementById('container').appendChild(renderer.domElement);
     
     setupLighting();
@@ -52,6 +88,8 @@ function init() {
     setupMouseControls();
 
     animate();
+
+    createQuestPanels();
 }
 
 function setupLighting() {
@@ -345,6 +383,134 @@ function handleResize() {
     camera.bottom = -d;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function createQuestPanels() {
+    questsData.forEach(quest => {
+        const panel = document.createElement('div');
+        panel.className = 'quest-panel';
+        panel.dataset.questId = quest.id;
+        
+        const completedTasks = quest.tasks.filter(task => task.completed).length;
+        const totalTasks = quest.tasks.length;
+        const progress = (completedTasks / totalTasks) * 100;
+        
+        panel.innerHTML = `
+            <h3>${quest.title}</h3>
+            <p>${quest.description}</p>
+            <div class="quest-progress">
+                <div class="quest-progress-fill" style="width: ${progress}%"></div>
+            </div>
+            <div class="quest-stats">
+                <span>${completedTasks}/${totalTasks} tasks</span>
+                <span>${Math.round(progress)}%</span>
+            </div>
+        `;
+        
+        panel.addEventListener('click', () => openQuestModal(quest));
+        
+        document.getElementById('container').appendChild(panel);
+        questPanels.push({
+            element: panel,
+            worldPosition: quest.position,
+            quest: quest
+        });
+    });
+}
+
+function updateQuestPanelPositions() {
+    questPanels.forEach(({ element, worldPosition }) => {
+        const vector = new THREE.Vector3(worldPosition.x, 2, worldPosition.z);
+        vector.project(camera);
+        
+        const x = (vector.x * 0.5 + 0.5) * renderer.domElement.clientWidth;
+        const y = (vector.y * -0.5 + 0.5) * renderer.domElement.clientHeight;
+        
+        if (vector.z < 1) {
+            element.style.left = `${x - 100}px`;
+            element.style.top = `${y - 60}px`;
+            element.style.display = 'block';
+            element.style.opacity = Math.max(0.3, 1 - vector.z);
+        } else {
+            element.style.display = 'none';
+        }
+    });
+}
+
+function openQuestModal(quest) {
+    const modal = document.getElementById('questModal');
+    const questTitle = document.getElementById('questTitle');
+    const questDescription = document.getElementById('questDescription');
+    const tasksList = document.getElementById('tasksList');
+    
+    questTitle.textContent = quest.title;
+    questDescription.textContent = quest.description;
+    
+    tasksList.innerHTML = '';
+    quest.tasks.forEach(task => {
+        const taskElement = document.createElement('div');
+        taskElement.className = `task-item ${task.completed ? 'task-completed' : ''}`;
+        taskElement.innerHTML = `
+            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} disabled>
+            <div class="task-content">
+                <div class="task-title">${task.title}</div>
+                <div class="task-description">${task.description}</div>
+            </div>
+        `;
+        tasksList.appendChild(taskElement);
+    });
+    
+    modal.style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('questModal');
+    const closeBtn = document.querySelector('.close');
+    
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+    
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    const addQuestBtn = document.querySelector('.controls-button:first-child');
+    const deleteQuestBtn = document.querySelector('.controls-button:nth-child(2)');
+    
+    if (addQuestBtn) {
+        addQuestBtn.addEventListener('click', () => {
+            console.log('Add quest clicked');
+        });
+    }
+    
+    if (deleteQuestBtn) {
+        deleteQuestBtn.addEventListener('click', () => {
+            console.log('Delete quest clicked');
+        });
+    }
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    currentRotation.x += (targetRotation.x - currentRotation.x) * 0.05;
+    currentRotation.y += (targetRotation.y - currentRotation.y) * 0.05;
+    
+    const baseDistance = 78;
+    const baseHeight = 25;
+    
+    camera.position.x = Math.cos(currentRotation.y + Math.PI / 4) * baseDistance;
+    camera.position.z = Math.sin(currentRotation.y + Math.PI / 4) * baseDistance;
+    camera.position.y = baseHeight + currentRotation.x * 10;
+    
+    camera.lookAt(0, 0, 0);
+    
+    updateQuestPanelPositions();
+    
+    renderer.render(scene, camera);
 }
 
 window.addEventListener('resize', handleResize);
