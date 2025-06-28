@@ -75,31 +75,8 @@
             </div>
 
             <div class="dashboard-grid">
-                <div class="card projects-stats">
-                    <h3>Projects Stats</h3>
-                    <p>Number of downloads of the projects vs. the number of sales</p>
-                </div>
-
-                <div class="card">
-                    <div class="tasks-chart">
-                        <div class="chart-circle">
-                            <div class="chart-percentage">73%</div>
-                        </div>
-                        <div class="chart-info">
-                            <h3>Tasks Chart</h3>
-                            <p>72% of tasks done</p>
-                        </div>
-                    </div>
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot done"></div>
-                            Done
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot progress"></div>
-                            In progress
-                        </div>
-                    </div>
+                <div class="card projects-stats" id="container">
+                    
                 </div>
 
                 <div class="card projects-report">
@@ -111,38 +88,23 @@
 
             <div class="bottom-section">
                 <div class="card">
-                    <div class="app-guidelines">
-                        <div class="app-icon">📱</div>
-                        <div class="app-info">
-                            <h4>App Store new guidelines</h4>
-                            <p>Guidelines for app submission</p>
+                    <div class="tasks-chart">
+                        <div class="chart-circle">
+                            <div class="chart-percentage">73%</div>
+                        </div>
+                        <div class="chart-info">
+                            <h3>Tasks Chart</h3>
+                            <p>72% of your tasks done</p>
                         </div>
                     </div>
-                    <div class="team-avatars">
-                        <div class="team-avatar"></div>
-                        <div class="team-avatar"></div>
-                        <div class="team-avatar"></div>
-                    </div>
-
-                    <div class="user-card" style="margin-top: 20px;">
-                        <div class="user-avatar"></div>
-                        <div class="user-info">
-                            <h4>Talk about Unwrap Figma plugins</h4>
-                            <p>75 participants</p>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot done"></div>
+                            Done
                         </div>
-                        <button class="meeting-btn">Join Meeting</button>
-                    </div>
-
-                    <div class="user-card">
-                        <div class="user-avatar"></div>
-                        <div class="user-info">
-                            <h4>Emanuel Valdez</h4>
-                            <p>Tasks Overall</p>
-                        </div>
-                        <div class="user-progress">
-                            <div class="progress-circle">
-                                <div class="progress-text">74.7%</div>
-                            </div>
+                        <div class="legend-item">
+                            <div class="legend-dot progress"></div>
+                            In progress
                         </div>
                     </div>
                 </div>
@@ -193,6 +155,8 @@
         </div>
     </div>
 
-    <script href = "script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+    <script src="map.js"></script>
 </body>
 </html>
