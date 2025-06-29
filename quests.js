@@ -3,6 +3,9 @@ let mouse = { x: 0, y: 0 };
 let targetRotation = { x: 0, y: 0 };
 let currentRotation = { x: 0, y: 0 };
 let questPanels = [];
+let zoomLevel = 1;
+const minZoom = 0.5;
+const maxZoom = 3;
 
 const questsData = [
     {
@@ -375,13 +378,7 @@ function animate() {
 }
 
 function handleResize() {
-    const aspect = window.innerWidth / window.innerHeight;
-    const d = 20;
-    camera.left = -d * aspect;
-    camera.right = d * aspect;
-    camera.top = d;
-    camera.bottom = -d;
-    camera.updateProjectionMatrix();
+    updateCameraZoom(); 
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
@@ -396,7 +393,8 @@ function createQuestPanels() {
         const progress = (completedTasks / totalTasks) * 100;
         
         panel.innerHTML = `
-            <h3>${quest.title}</h3>
+            ${quest.isPersonal ? '<button class="delete-quest-btn" onclick="deletePersonalQuest(' + quest.id + ')">×</button>' : ''}
+            <h3>${quest.title}${quest.isPersonal ? ' 👤' : ''}</h3>
             <p>${quest.description}</p>
             <div class="quest-progress">
                 <div class="quest-progress-fill" style="width: ${progress}%"></div>
@@ -406,6 +404,13 @@ function createQuestPanels() {
                 <span>${Math.round(progress)}%</span>
             </div>
         `;
+
+        panel.addEventListener('click', (e) => {
+            // Prevent opening modal when clicking delete button
+            if (!e.target.classList.contains('delete-quest-btn')) {
+                openQuestModal(quest);
+            }
+        });
         
         panel.addEventListener('click', () => openQuestModal(quest));
         
@@ -708,6 +713,30 @@ function toggleTask(questId, taskId) {
     console.log(`Task ${taskId} in quest ${questId} marked as ${task.completed ? 'completed' : 'incomplete'}`);
 }
 
+function updateCameraZoom() {
+    const aspect = window.innerWidth / window.innerHeight;
+    const d = 20 / zoomLevel; 
+    
+    camera.left = -d * aspect;
+    camera.right = d * aspect;
+    camera.top = d;
+    camera.bottom = -d;
+    camera.updateProjectionMatrix();
+}
+
+function resetView() {
+    zoomLevel = 1;
+    targetRotation.x = 0;
+    targetRotation.y = 0;
+    currentRotation.x = 0;
+    currentRotation.y = 0;
+    
+    camera.position.set(28, 20, 28);
+    camera.lookAt(0, 0, 0);
+    
+    updateCameraZoom();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('questModal');
     const addQuestModal = document.getElementById('addQuestModal');
@@ -741,10 +770,28 @@ document.addEventListener('DOMContentLoaded', () => {
             addQuestModal.style.display = 'block';
         });
     }
+
+    const zoomInBtn = document.querySelector('.controls-button:nth-child(2)'); 
+    const zoomOutBtn = document.querySelector('.controls-button:nth-child(3)');  
+    const resetViewBtn = document.querySelector('.controls-button:nth-child(4)'); 
     
-    if (deleteQuestBtn) {
-        deleteQuestBtn.addEventListener('click', () => {
-            console.log('Delete quest clicked');
+    if (zoomInBtn) {
+        zoomInBtn.addEventListener('click', () => {
+            zoomLevel = Math.min(zoomLevel + 0.2, maxZoom);
+            updateCameraZoom();
+        });
+    }
+    
+    if (zoomOutBtn) {
+        zoomOutBtn.addEventListener('click', () => {
+            zoomLevel = Math.max(zoomLevel - 0.2, minZoom);
+            updateCameraZoom();
+        });
+    }
+    
+    if (resetViewBtn) {
+        resetViewBtn.addEventListener('click', () => {
+            resetView();
         });
     }
 
@@ -891,6 +938,7 @@ function createSingleQuestPanel(quest) {
     const progress = (completedTasks / totalTasks) * 100;
     
     panel.innerHTML = `
+        ${quest.isPersonal ? '<button class="delete-quest-btn" onclick="deletePersonalQuest(' + quest.id + ')">×</button>' : ''}
         <h3>${quest.title}${quest.isPersonal ? ' 👤' : ''}</h3>
         <p>${quest.description}</p>
         <div class="quest-progress">
@@ -902,7 +950,11 @@ function createSingleQuestPanel(quest) {
         </div>
     `;
     
-    panel.addEventListener('click', () => openQuestModal(quest));
+    panel.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('delete-quest-btn')) {
+            openQuestModal(quest);
+        }
+    });
     
     document.getElementById('container').appendChild(panel);
     questPanels.push({
@@ -925,6 +977,27 @@ function updateQuestPanel(quest) {
         progressFill.style.width = `${progress}%`;
         statsSpan.textContent = `${completedTasks}/${totalTasks} tasks`;
         panel.querySelector('.quest-stats span:last-child').textContent = `${Math.round(progress)}%`;
+    }
+}
+
+function deletePersonalQuest(questId) {
+    if (confirm('Are you sure you want to delete this personal quest?')) {
+        const questIndex = questsData.findIndex(q => q.id === questId);
+        if (questIndex !== -1) {
+            questsData.splice(questIndex, 1);
+        }
+        
+        const panel = document.querySelector(`[data-quest-id="${questId}"]`);
+        if (panel) {
+            panel.remove();
+        }
+        
+        const panelIndex = questPanels.findIndex(p => p.quest.id === questId);
+        if (panelIndex !== -1) {
+            questPanels.splice(panelIndex, 1);
+        }
+        
+        console.log('Personal quest deleted:', questId);
     }
 }
 
