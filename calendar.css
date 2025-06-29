@@ -80,17 +80,21 @@
 
 .day-cell {
     background: white;
-    padding: 15px 5px;
+    padding: 1px 5px;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    min-height: 50px;
+    min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 500;
     position: relative;
+    display: flex;
+    justify-content: end;
+    align-items: start;
 }
+
 
 .day-cell:hover {
     background: linear-gradient(135deg, #ffebf2, #e97e9c);
