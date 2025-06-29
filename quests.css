@@ -361,3 +361,9 @@
     gap: 8px;
     flex: 1;
 }
+
+.edit-btn {
+    background: none;
+    color: var(--text-primary);
+    border: none;
+}
