@@ -74,9 +74,9 @@
 
   .subheading {
     color: aliceblue;
-    background-color: peru;
-    padding: 1rem;
-    border-radius: 1rem;
+    background-color: rgb(255, 183, 68);
+    padding: 0.5rem 1rem;
+    border-radius: 10rem;
     width: fit-content;
     font-size: medium;
   }
@@ -91,6 +91,19 @@
   color: #333;
   font-size: 20px;
   text-shadow: -2px 2px 0 #ff6b9d;
+}
+
+.streak {
+  font-family: "PressStart2P", sans-serif;
+  font-weight: 600;
+  color: #333;
+  font-size: 20px;
+  text-shadow: -2px 2px 0 #ff6b1c;
+
+  h2 {
+    color: rgb(255, 218, 151);
+    text-shadow: 0 0 8px #ff6b1c;
+  }
 }
 
 .stats-card {
