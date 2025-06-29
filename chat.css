@@ -94,3 +94,11 @@
     align-self: flex-end;
     background-color: white;
 }
+
+.hover-div:hover{
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+.none{
+    display: none;
+}

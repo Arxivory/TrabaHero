@@ -1,9 +1,9 @@
-
 class Guilds{
     constructor(name, time, message){
         this.name = name;
         this.time = time;
         this.message = message;
+        this.element = null; // Store reference to DOM element
     }
 }
 
@@ -12,7 +12,7 @@ class Guilds{
         new Guilds("NexaCloud Solutions", "10:42 AM", "Maria: Our DevOps team has pushed the latest security patch to production."),
         new Guilds("QuantumByte AI", "Yesterday, 3:15 PM", "Dray: Can you confirm the model version used for the last deployment?"),
         new Guilds("CircuitStream Labs", "Today, 9:58 AM", "Mark: The real-time analytics dashboard is now fully operational."),
-        new Guilds("FusionStack Technologies", "Friday, 6:31 PM", "Jenny: We’ve integrated the new API endpoint for billing queries."),
+        new Guilds("FusionStack Technologies", "Friday, 6:31 PM", "Jenny: We've integrated the new API endpoint for billing queries."),
         new Guilds("VertexNet Security", "Monday, 11:02 AM", "Amy: All servers passed the vulnerability scan with no critical issues.")
     ];
 
@@ -25,8 +25,15 @@ class Guilds{
         const guildName = document.createElement("h3");
         const chatSidebar = document.querySelector(".contact-list");
 
+        // Store reference to the main container element
+        guild.element = guildChatBox;
+
         guildChatBox.style.display = "flex";
         guildChatBox.style.marginTop = "15px";
+        guildChatBox.style.cursor = "pointer";
+        guildChatBox.style.padding = "5px";
+        guildChatBox.style.borderRadius = "10px";
+        guildChatBox.classList.add("hover-div");
 
         guildPic.style.background = "linear-gradient(135deg, #ffeaa7, #fdcb6e)"
         guildPic.style.width = "50px";
@@ -56,6 +63,6 @@ class Guilds{
         guildChatBox.appendChild(guildChatDetails);
         
         chatSidebar.appendChild(guildChatBox);
+    });
 
-    })
 })();
