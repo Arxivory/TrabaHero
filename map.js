@@ -33,7 +33,7 @@ const teamMembers = [
         role: "UI/UX Designer",
         class: "Tactician",
         level: 15,
-        avatar: "assets/user-profile.jpg",
+        avatar: "assets/7.png",
         isCurrentUser: true,
         position: { x: -1, y: -2, z: 7 }
     },
