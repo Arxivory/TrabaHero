@@ -193,9 +193,15 @@ nav {
 
 .text-color {
     color: #333;
+<<<<<<< HEAD
     font-size: clamp(24px, 4vw, 24px);
     font-weight: 700;
     margin-bottom: var(--spacing-sm);
+=======
+    /* font-size: 32px;
+    font-weight: 700; */
+    margin-bottom: 10px;
+>>>>>>> profile
     font-family: 'PressStart2P', sans-serif;
     text-shadow: -2px 2px 0 #ff6b9d;;
 }
