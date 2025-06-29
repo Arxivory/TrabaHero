@@ -2,20 +2,65 @@ let scene, camera, renderer, buildings = [], island;
 let mouse = { x: 0, y: 0 };
 let targetRotation = { x: 0, y: 0 };
 let currentRotation = { x: 0, y: 0 };
+let memberPanels = [];
+let panelContainer;
 
-// Color palette inspired by the image
+// Sample team data lang muna toh
+const teamMembers = [
+    {
+        id: 1,
+        name: "You",
+        role: "UI/UX Designer",
+        class: "Tactician",
+        level: 15,
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+        isCurrentUser: true,
+        position: { x: -7, y: 3, z: 15 }
+    },
+    {
+        id: 2,
+        name: "Alex Rodriguez",
+        role: "Developer",
+        class: "Strategist",
+        level: 18,
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+        isCurrentUser: false,
+        position: { x: 2, y: 6, z: -7 }
+    },
+    {
+        id: 3,
+        name: "Emma Johnson",
+        role: "Researcher",
+        class: "Scholar",
+        level: 12,
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+        isCurrentUser: false,
+        position: { x: -1, y: -2, z: 7 }
+    },
+    {
+        id: 4,
+        name: "Mike Thompson",
+        role: "Product Manager",
+        class: "Tactician",
+        level: 16,
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
+        isCurrentUser: false,
+        position: { x: 20, y: 7, z: -4 }
+    }
+];
+
 const colors = {
     buildings: [
-        0xFFE5B4, // Light peach
-        0xFFD1DC, // Light pink
-        0xE0E6FF, // Light blue
-        0xD4FFAA, // Light green
-        0xFFF2CC, // Light yellow
-        0xFFCCCC, // Light coral
-        0xCCE5FF, // Sky blue
-        0xE6CCFF, // Light purple
-        0xFFE0CC, // Light orange
-        0xCCFFCC  // Mint green
+        0xFFE5B4, 
+        0xFFD1DC, 
+        0xE0E6FF, 
+        0xD4FFAA, 
+        0xFFF2CC, 
+        0xFFCCCC, 
+        0xCCE5FF, 
+        0xE6CCFF, 
+        0xFFE0CC, 
+        0xCCFFCC  
     ],
     ground: 0xF5F5F5,
     roads: 0xE8E8E8,
@@ -23,11 +68,9 @@ const colors = {
 };
 
 function init() {
-    // Scene setup
     scene = new THREE.Scene();
-    scene.background = null; // Transparent background to show the water
+    scene.background = null; 
     
-    // Camera setup for isometric view
     const aspect = window.innerWidth / window.innerHeight;
     const d = 20;
     camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000);
@@ -40,7 +83,7 @@ function init() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.setClearColor(0x000000, 0); // Transparent background
+    renderer.setClearColor(0x000000, 0); 
     document.getElementById('container').appendChild(renderer.domElement);
     
     setupLighting();
@@ -48,6 +91,8 @@ function init() {
     createIsland();
     
     generateCity();
+
+    createMemberPanels();
     
     setupMouseControls();
 
@@ -303,6 +348,142 @@ function addBuilding() {
     buildings.push(building);
 }
 
+function createMemberPanels() {
+    panelContainer = document.createElement('div');
+    panelContainer.style.position = 'absolute';
+    panelContainer.style.top = '0';
+    panelContainer.style.left = '0';
+    panelContainer.style.width = '100%';
+    panelContainer.style.height = '100%';
+    panelContainer.style.pointerEvents = 'none';
+    panelContainer.style.zIndex = '10';
+    
+    document.getElementById('container').appendChild(panelContainer);
+
+    teamMembers.forEach(member => {
+        const panel = createMemberPanel(member);
+        panelContainer.appendChild(panel);
+        memberPanels.push({
+            element: panel,
+            member: member,
+            worldPosition: new THREE.Vector3(member.position.x, member.position.y, member.position.z)
+        });
+    });
+}
+
+function createMemberPanel(member) {
+    const panel = document.createElement('div');
+    panel.className = `member-panel ${member.isCurrentUser ? 'current-user' : ''}`;
+    panel.style.cssText = `
+        position: absolute;
+        background: ${member.isCurrentUser ? 'linear-gradient(135deg, #ff6b9d, #e55a87)' : 'rgba(255, 255, 255, 0.95)'};
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: ${member.isCurrentUser ? '2px solid #ffd700' : '1px solid rgba(255, 107, 157, 0.2)'};
+        min-width: 200px;
+        transition: all 0.3s ease;
+        pointer-events: auto;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: ${member.isCurrentUser ? '#fff' : '#333'};
+        transform: translateX(-50%) translateY(-100%);
+    `;
+
+    const classColors = {
+        'Tactician': '#ff6b9d',
+        'Strategist': '#9b59b6',
+        'Scholar': '#3498db',
+        'Leader': '#f39c12'
+    };
+
+    panel.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+            <div style="
+                width: 40px; 
+                height: 40px; 
+                border-radius: 50%; 
+                background-image: url('${member.avatar}'); 
+                background-size: cover; 
+                background-position: center;
+                border: 2px solid ${member.isCurrentUser ? '#ffd700' : '#fff'};
+                flex-shrink: 0;
+            "></div>
+            <div style="flex: 1; min-width: 0;">
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 2px; display: flex; align-items: center; gap: 6px;">
+                    ${member.name}
+                    ${member.isCurrentUser ? '<span style="background: #ffd700; color: #333; padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 700;">YOU</span>' : ''}
+                </div>
+                <div style="font-size: 12px; opacity: 0.8;">
+                    ${member.role}
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div style="
+                background: ${classColors[member.class] || '#666'}; 
+                color: white; 
+                padding: 4px 8px; 
+                border-radius: 12px; 
+                font-size: 10px; 
+                font-weight: 600;
+                text-transform: uppercase;
+            ">
+                ${member.class}
+            </div>
+            <div style="
+                background: ${member.isCurrentUser ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 107, 157, 0.1)'}; 
+                padding: 4px 8px; 
+                border-radius: 12px; 
+                font-size: 12px; 
+                font-weight: 600;
+                color: ${member.isCurrentUser ? '#fff' : '#ff6b9d'};
+            ">
+                LVL ${member.level}
+            </div>
+        </div>
+    `;
+
+    panel.addEventListener('mouseenter', () => {
+        panel.style.transform = 'translateX(-50%) translateY(-100%) scale(1.05)';
+        panel.style.boxShadow = '0 12px 48px rgba(0, 0, 0, 0.15)';
+    });
+
+    panel.addEventListener('mouseleave', () => {
+        panel.style.transform = 'translateX(-50%) translateY(-100%) scale(1)';
+        panel.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+    });
+
+    return panel;
+}
+
+function updateMemberPanels() {
+    if (!memberPanels.length) return;
+
+    memberPanels.forEach(panelData => {
+        const screenPosition = panelData.worldPosition.clone();
+        screenPosition.project(camera);
+
+        const container = document.getElementById('container');
+        const x = (screenPosition.x * 0.5 + 0.5) * container.clientWidth;
+        const y = (screenPosition.y * -0.5 + 0.5) * container.clientHeight;
+
+        const isVisible = screenPosition.z < 1 && 
+                         x >= -100 && x <= container.clientWidth + 100 && 
+                         y >= -100 && y <= container.clientHeight + 100;
+
+        if (isVisible) {
+            panelData.element.style.left = x + 'px';
+            panelData.element.style.top = y + 'px';
+            panelData.element.style.opacity = '1';
+            panelData.element.style.pointerEvents = 'auto';
+        } else {
+            panelData.element.style.opacity = '0';
+            panelData.element.style.pointerEvents = 'none';
+        }
+    });
+}
+
 function setupMouseControls() {
     document.addEventListener('mousemove', (event) => {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -332,6 +513,8 @@ function animate() {
     camera.position.y = baseHeight + currentRotation.x * 10;
     
     camera.lookAt(0, 0, 0);
+
+    updateMemberPanels();
     
     renderer.render(scene, camera);
 }
@@ -345,6 +528,9 @@ function handleResize() {
     camera.bottom = -d;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    if (memberPanels.length > 0) {
+        updateMemberPanels();
+    }
 }
 
 window.addEventListener('resize', handleResize);

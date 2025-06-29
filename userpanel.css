@@ -1,0 +1,43 @@
+.member-panel {
+    animation: panelFadeIn 0.6s ease-out;
+}
+
+.member-panel.current-user {
+    animation: panelFadeIn 0.6s ease-out, currentUserGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes panelFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-100%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-100%) scale(1);
+    }
+}
+
+@keyframes currentUserGlow {
+    from {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    to {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 0 30px rgba(255, 215, 0, 0.6);
+    }
+}
+
+@media (max-width: 768px) {
+    .member-panel {
+        min-width: 160px;
+        padding: 10px;
+        font-size: 12px;
+    }
+    
+    .member-panel div[style*="font-size: 14px"] {
+        font-size: 12px !important;
+    }
+    
+    .member-panel div[style*="font-size: 12px"] {
+        font-size: 10px !important;
+    }
+}
