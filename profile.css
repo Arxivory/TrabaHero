@@ -13,6 +13,13 @@
 .achievements {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex: 0;
+  font-family: "PressStart2P", sans-serif;
+  font-weight: 600;
+  color: #333;
+  font-size: 20px;
+  text-shadow: -2px 2px 0 #ff6b9d;
 }
 
 .achievements-count {
@@ -20,8 +27,14 @@
 }
 
 .achievements-symbols {
+  margin-top: 10px;
   display: flex;
-  gap: 25px;
+  justify-content: space-between;
+
+  img {
+    height: 50px;
+    width: auto;
+  }
 }
 
 .projects-stats {
@@ -36,31 +49,96 @@
   margin-bottom: 25px;
 }
 
+.profile-user {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 5px;
+  align-items: baseline;
+}
+
 .profile-img {
-  background-color: gray;
-  padding: 10rem;
+  background: rgba(255, 255, 255, 0.95);
+  height: 16rem;
+  width: 16rem;
+  border-radius: 8rem;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .profile-details {
-}
+  flex: 1;
 
-.task-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.task {
-  display: flex;
-  gap: 25px;
-
-  h3 {
-    font-weight: 400;
+  .subheading {
+    color: aliceblue;
+    background-color: rgb(255, 183, 68);
+    padding: 0.5rem 1rem;
+    border-radius: 10rem;
+    width: fit-content;
+    font-size: medium;
   }
 }
 
 .stats {
   margin-top: 50px;
   display: flex;
-  gap: 50px;
+  justify-content: space-between;
+  font-family: "PressStart2P", sans-serif;
+  font-weight: 600;
+  color: #333;
+  font-size: 20px;
+  text-shadow: -2px 2px 0 #ff6b9d;
+}
+
+.streak {
+  font-family: "PressStart2P", sans-serif;
+  font-weight: 600;
+  color: #333;
+  font-size: 20px;
+  text-shadow: -2px 2px 0 #ff6b1c;
+
+  h2 {
+    color: rgb(255, 218, 151);
+    text-shadow: 0 0 8px #ff6b1c;
+  }
+}
+
+.stats-card {
+  h2 {
+    margin-bottom: 15px;
+    text-align: center;
+  }
+}
+
+.activity {
+  grid-column: span 2;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.activity-title {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-family: "PressStart2P", sans-serif;
+  font-weight: 600;
+  color: #333;
+  font-size: 20px;
+  text-shadow: -2px 2px 0 #ff6b9d;
+}
+
+.task-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task {
+  display: grid;
+  grid-template-columns: 0.5fr repeat(4, 1fr) 1.2fr;
+  align-items: center;
 }

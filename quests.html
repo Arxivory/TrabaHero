@@ -39,7 +39,7 @@
                     <div class="nav-icon"></div>
                     Guild
                 </a>
-                <a href="#" class="nav-item">
+                <a href="profile.html" class="nav-item">
                     <div class="nav-icon"></div>
                     Profile
                 </a>
@@ -48,7 +48,7 @@
             <div class="go-pro">
                 <h3>Go Pro!</h3>
                 <p>Upgrades your plans to get VIP benefits</p>
-                <button class="pro-btn">Get Started</button>
+                <a href="pricing-plan.html" class="pro-btn">Get Started</a>
             </div>
         </div>
 
@@ -117,8 +117,11 @@
                         <label>Tasks</label>
                         <div id="tasksInputContainer">
                             <div class="task-input-group">
-                                <input type="text" class="task-title-input" placeholder="Task title" required>
-                                <input type="text" class="task-desc-input" placeholder="Task description">
+                                <div class="task-input-column">
+                                    <input type="text" class="task-title-input" placeholder="Task title" required>
+                                    <input type="text" class="task-desc-input" placeholder="Task description">
+                                </div>
+                                <input type="date" class="task-date-input" title="Due date">
                                 <button type="button" class="remove-task-btn">×</button>
                             </div>
                         </div>

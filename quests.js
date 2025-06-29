@@ -11,10 +11,10 @@ const questsData = [
         description: "Complete the company website redesign project",
         position: { x: 5, z: 8 },
         tasks: [
-            { id: 1, title: "Create wireframes", description: "Design basic layout structure", completed: true },
-            { id: 2, title: "UI Design", description: "Create visual design mockups", completed: true },
-            { id: 3, title: "Frontend Development", description: "Code the frontend interface", completed: false },
-            { id: 4, title: "Backend Integration", description: "Connect with backend APIs", completed: false }
+            { id: 1, title: "Create wireframes", description: "Design basic layout structure", completed: true, dueDate: "2025-06-20" },
+            { id: 2, title: "UI Design", description: "Create visual design mockups", completed: true, dueDate: "2025-06-25" },
+            { id: 3, title: "Frontend Development", description: "Code the frontend interface", completed: false, dueDate: "2025-07-10" },
+            { id: 4, title: "Backend Integration", description: "Connect with backend APIs", completed: false, dueDate: "2025-07-20" }
         ]
     },
     {
@@ -23,9 +23,9 @@ const questsData = [
         description: "Develop the mobile application",
         position: { x: -8, z: 12 },
         tasks: [
-            { id: 5, title: "Market Research", description: "Analyze target audience", completed: true },
-            { id: 6, title: "App Design", description: "Create mobile UI/UX", completed: false },
-            { id: 7, title: "Development", description: "Code the mobile app", completed: false }
+            { id: 5, title: "Market Research", description: "Analyze target audience", completed: true, dueDate: "2025-06-15" },
+            { id: 6, title: "App Design", description: "Create mobile UI/UX", completed: false, dueDate: "2025-07-05" },
+            { id: 7, title: "Development", description: "Code the mobile app", completed: false, dueDate: "2025-08-01" }
         ]
     },
     {
@@ -34,10 +34,10 @@ const questsData = [
         description: "Migrate legacy database to new system",
         position: { x: 12, z: -5 },
         tasks: [
-            { id: 8, title: "Data Backup", description: "Create complete backup", completed: true },
-            { id: 9, title: "Schema Design", description: "Design new database schema", completed: true },
-            { id: 10, title: "Data Migration", description: "Transfer data to new system", completed: false },
-            { id: 11, title: "Testing", description: "Verify data integrity", completed: false }
+            { id: 8, title: "Data Backup", description: "Create complete backup", completed: true, dueDate: "2025-06-18" },
+            { id: 9, title: "Schema Design", description: "Design new database schema", completed: true, dueDate: "2025-06-30" },
+            { id: 10, title: "Data Migration", description: "Transfer data to new system", completed: false, dueDate: "2025-07-15" },
+            { id: 11, title: "Testing", description: "Verify data integrity", completed: false, dueDate: "2025-07-25" }
         ]
     }
 ];
@@ -437,30 +437,275 @@ function updateQuestPanelPositions() {
     });
 }
 
+function editQuestTitle(questId) {
+    const titleSpan = document.querySelector(`.editable-title[data-quest-id="${questId}"]`);
+    const currentTitle = titleSpan.textContent;
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentTitle;
+    input.className = 'edit-input';
+    
+    titleSpan.replaceWith(input);
+    input.focus();
+    
+    input.addEventListener('blur', () => saveQuestTitle(questId, input.value));
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            saveQuestTitle(questId, input.value);
+        }
+    });
+}
+
+function saveQuestTitle(questId, newTitle) {
+    const quest = questsData.find(q => q.id === questId);
+    quest.title = newTitle;
+    
+    const input = document.querySelector('.edit-input');
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'editable-title';
+    titleSpan.setAttribute('data-quest-id', questId);
+    titleSpan.textContent = newTitle;
+    
+    input.replaceWith(titleSpan);
+    
+    updateQuestPanel(quest);
+    const panel = document.querySelector(`[data-quest-id="${questId}"]`);
+    if (panel) {
+        panel.querySelector('h3').textContent = newTitle + (quest.isPersonal ? ' 👤' : '');
+    }
+}
+
+function editQuestDescription(questId) {
+    const descSpan = document.querySelector(`.editable-desc[data-quest-id="${questId}"]`);
+    const currentDesc = descSpan.textContent;
+    
+    const textarea = document.createElement('textarea');
+    textarea.value = currentDesc;
+    textarea.className = 'edit-textarea';
+    
+    descSpan.replaceWith(textarea);
+    textarea.focus();
+    
+    textarea.addEventListener('blur', () => saveQuestDescription(questId, textarea.value));
+}
+
+function saveQuestDescription(questId, newDesc) {
+    const quest = questsData.find(q => q.id === questId);
+    quest.description = newDesc;
+    
+    const textarea = document.querySelector('.edit-textarea');
+    const descSpan = document.createElement('span');
+    descSpan.className = 'editable-desc';
+    descSpan.setAttribute('data-quest-id', questId);
+    descSpan.textContent = newDesc;
+    
+    textarea.replaceWith(descSpan);
+    
+    const panel = document.querySelector(`[data-quest-id="${questId}"]`);
+    if (panel) {
+        panel.querySelector('p').textContent = newDesc;
+    }
+}
+
+function editTaskTitle(questId, taskId) {
+    const titleSpan = document.querySelector(`.editable-task-title[data-quest-id="${questId}"][data-task-id="${taskId}"]`);
+    const currentTitle = titleSpan.textContent;
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentTitle;
+    input.className = 'edit-input';
+    
+    titleSpan.replaceWith(input);
+    input.focus();
+    
+    input.addEventListener('blur', () => saveTaskTitle(questId, taskId, input.value));
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            saveTaskTitle(questId, taskId, input.value);
+        }
+    });
+}
+
+function saveTaskTitle(questId, taskId, newTitle) {
+    const quest = questsData.find(q => q.id === questId);
+    const task = quest.tasks.find(t => t.id === taskId);
+    task.title = newTitle;
+    
+    const input = document.querySelector('.edit-input');
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'task-title editable-task-title';
+    titleSpan.setAttribute('data-quest-id', questId);
+    titleSpan.setAttribute('data-task-id', taskId);
+    titleSpan.textContent = newTitle;
+    
+    input.replaceWith(titleSpan);
+}
+
+function editTaskDescription(questId, taskId) {
+    const descSpan = document.querySelector(`.editable-task-desc[data-quest-id="${questId}"][data-task-id="${taskId}"]`);
+    const currentDesc = descSpan.textContent;
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentDesc;
+    input.className = 'edit-input';
+    
+    descSpan.replaceWith(input);
+    input.focus();
+    
+    input.addEventListener('blur', () => saveTaskDescription(questId, taskId, input.value));
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            saveTaskDescription(questId, taskId, input.value);
+        }
+    });
+}
+
+function saveTaskDescription(questId, taskId, newDesc) {
+    const quest = questsData.find(q => q.id === questId);
+    const task = quest.tasks.find(t => t.id === taskId);
+    task.description = newDesc;
+    
+    const input = document.querySelector('.edit-input');
+    const descSpan = document.createElement('span');
+    descSpan.className = 'task-description editable-task-desc';
+    descSpan.setAttribute('data-quest-id', questId);
+    descSpan.setAttribute('data-task-id', taskId);
+    descSpan.textContent = newDesc;
+    
+    input.replaceWith(descSpan);
+}
+
+function editTaskDueDate(questId, taskId) {
+    const quest = questsData.find(q => q.id === questId);
+    const task = quest.tasks.find(t => t.id === taskId);
+    
+    const dueDateContainer = document.querySelector(`[data-quest-id="${questId}"][data-task-id="${taskId}"]`)
+        .closest('.task-content').querySelector('.task-due-date-container .task-due-date');
+    
+    const input = document.createElement('input');
+    input.type = 'date';
+    input.value = task.dueDate || '';
+    input.className = 'edit-date-input';
+    
+    const originalContent = dueDateContainer.innerHTML;
+    dueDateContainer.innerHTML = '';
+    dueDateContainer.appendChild(input);
+    input.focus();
+    
+    input.addEventListener('blur', () => saveTaskDueDate(questId, taskId, input.value));
+    input.addEventListener('change', () => saveTaskDueDate(questId, taskId, input.value));
+}
+
+function saveTaskDueDate(questId, taskId, newDate) {
+    const quest = questsData.find(q => q.id === questId);
+    const task = quest.tasks.find(t => t.id === taskId);
+    task.dueDate = newDate || null;
+    
+    const dueDateContainer = document.querySelector(`[data-quest-id="${questId}"][data-task-id="${taskId}"]`)
+        .closest('.task-content').querySelector('.task-due-date-container .task-due-date');
+    
+    const dueDateInfo = task.dueDate ? formatDueDate(task.dueDate) : null;
+    
+    if (dueDateInfo) {
+        dueDateContainer.className = `task-due-date ${dueDateInfo.class}`;
+        dueDateContainer.innerHTML = `📅 Due: ${dueDateInfo.text}`;
+    } else {
+        dueDateContainer.className = 'task-due-date';
+        dueDateContainer.innerHTML = '📅 No due date';
+    }
+}
+
 function openQuestModal(quest) {
     const modal = document.getElementById('questModal');
     const questTitle = document.getElementById('questTitle');
     const questDescription = document.getElementById('questDescription');
     const tasksList = document.getElementById('tasksList');
     
-    questTitle.textContent = quest.title;
-    questDescription.textContent = quest.description;
+    questTitle.innerHTML = `
+        <span class="editable-title" data-quest-id="${quest.id}">${quest.title}</span>
+        <button class="edit-btn" onclick="editQuestTitle(${quest.id})">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+        </button>
+    `;
+    
+    questDescription.innerHTML = `
+        <span class="editable-desc" data-quest-id="${quest.id}">${quest.description}</span>
+        <button class="edit-btn" onclick="editQuestDescription(${quest.id})">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+        </button>
+    `;
     
     tasksList.innerHTML = '';
     quest.tasks.forEach(task => {
         const taskElement = document.createElement('div');
         taskElement.className = `task-item ${task.completed ? 'task-completed' : ''}`;
+        
+        const dueDateInfo = task.dueDate ? formatDueDate(task.dueDate) : null;
+        
         taskElement.innerHTML = `
-            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} disabled>
+            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} 
+                   onchange="toggleTask(${quest.id}, ${task.id})">
             <div class="task-content">
-                <div class="task-title">${task.title}</div>
-                <div class="task-description">${task.description}</div>
+                <div class="task-title-container">
+                    <span class="task-title editable-task-title" data-quest-id="${quest.id}" data-task-id="${task.id}">${task.title}</span>
+                    <button class="edit-btn small" onclick="editTaskTitle(${quest.id}, ${task.id})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="task-description-container">
+                    <span class="task-description editable-task-desc" data-quest-id="${quest.id}" data-task-id="${task.id}">${task.description}</span>
+                    <button class="edit-btn small" onclick="editTaskDescription(${quest.id}, ${task.id})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="task-due-date-container">
+                    ${dueDateInfo ? `<div class="task-due-date ${dueDateInfo.class}">📅 Due: ${dueDateInfo.text}</div>` : '<div class="task-due-date">📅 No due date</div>'}
+                    <button class="edit-btn small" onclick="editTaskDueDate(${quest.id}, ${task.id})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         `;
         tasksList.appendChild(taskElement);
     });
     
     modal.style.display = 'block';
+}
+
+function toggleTask(questId, taskId) {
+    const quest = questsData.find(q => q.id === questId);
+    const task = quest.tasks.find(t => t.id === taskId);
+    
+    task.completed = !task.completed;
+    
+    updateQuestPanel(quest);
+    
+    const taskElement = document.querySelector(`[data-quest-id="${questId}"][data-task-id="${taskId}"]`).closest('.task-item');
+    if (task.completed) {
+        taskElement.classList.add('task-completed');
+    } else {
+        taskElement.classList.remove('task-completed');
+    }
+    
+    console.log(`Task ${taskId} in quest ${questId} marked as ${task.completed ? 'completed' : 'incomplete'}`);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -532,8 +777,11 @@ function addTaskInput() {
     const taskGroup = document.createElement('div');
     taskGroup.className = 'task-input-group';
     taskGroup.innerHTML = `
-        <input type="text" class="task-title-input" placeholder="Task title" required>
-        <input type="text" class="task-desc-input" placeholder="Task description">
+        <div class="task-input-column">
+            <input type="text" class="task-title-input" placeholder="Task title" required>
+            <input type="text" class="task-desc-input" placeholder="Task description">
+        </div>
+        <input type="date" class="task-date-input" title="Due date">
         <button type="button" class="remove-task-btn">×</button>
     `;
     tasksContainer.appendChild(taskGroup);
@@ -563,13 +811,15 @@ function handleAddQuest() {
     taskGroups.forEach(group => {
         const titleInput = group.querySelector('.task-title-input');
         const descInput = group.querySelector('.task-desc-input');
+        const dateInput = group.querySelector('.task-date-input');
         
         if (titleInput.value.trim()) {
             tasks.push({
                 id: taskId++,
                 title: titleInput.value.trim(),
                 description: descInput.value.trim() || '',
-                completed: false
+                completed: false,
+                dueDate: dateInput.value || null
             });
         }
     });
@@ -596,6 +846,26 @@ function handleAddQuest() {
     resetAddQuestForm();
     
     console.log('Personal quest created:', newQuest);
+}
+
+function formatDueDate(dateString) {
+    if (!dateString) return '';
+    
+    const dueDate = new Date(dateString);
+    const today = new Date();
+    const diffTime = dueDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    const options = { month: 'short', day: 'numeric' };
+    const formattedDate = dueDate.toLocaleDateString('en-US', options);
+    
+    if (diffDays < 0) {
+        return { text: `${formattedDate} (${Math.abs(diffDays)} days overdue)`, class: 'overdue' };
+    } else if (diffDays <= 3) {
+        return { text: `${formattedDate} (${diffDays} days left)`, class: 'due-soon' };
+    } else {
+        return { text: formattedDate, class: '' };
+    }
 }
 
 function getRandomPosition() {
@@ -640,6 +910,22 @@ function createSingleQuestPanel(quest) {
         worldPosition: quest.position,
         quest: quest
     });
+}
+
+function updateQuestPanel(quest) {
+    const panel = document.querySelector(`[data-quest-id="${quest.id}"]`);
+    if (panel) {
+        const completedTasks = quest.tasks.filter(task => task.completed).length;
+        const totalTasks = quest.tasks.length;
+        const progress = (completedTasks / totalTasks) * 100;
+        
+        const progressFill = panel.querySelector('.quest-progress-fill');
+        const statsSpan = panel.querySelector('.quest-stats span');
+        
+        progressFill.style.width = `${progress}%`;
+        statsSpan.textContent = `${completedTasks}/${totalTasks} tasks`;
+        panel.querySelector('.quest-stats span:last-child').textContent = `${Math.round(progress)}%`;
+    }
 }
 
 function animate() {

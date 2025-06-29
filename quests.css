@@ -318,3 +318,52 @@
     background: var(--primary-dark);
     transform: translateY(-2px);
 }
+
+.task-due-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.task-due-date.overdue {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.task-due-date.due-soon {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.task-date-input {
+    flex: 1;
+    padding: 8px;
+    border: 2px solid rgba(255, 107, 157, 0.2);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    min-width: 140px;
+}
+
+.task-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.task-input-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.edit-btn {
+    background: none;
+    color: var(--text-primary);
+    border: none;
+}
