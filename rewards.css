@@ -1,0 +1,25 @@
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+}
+
+.rewards-card {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  gap: 15px;
+
+  img {
+    align-self: center;
+    height: auto;
+    width: 50px;
+  }
+
+  h4 {
+    font-family: "PressStart2P", sans-serif;
+    font-weight: 400;
+    color: var(--text-primary);
+    text-shadow: -2px 2px 0 var(--primary-color);
+  }
+}

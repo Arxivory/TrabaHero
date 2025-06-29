@@ -1,103 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TrabaHero</title>
-    <link rel = "stylesheet" href = "style.css">
-    <link rel = "stylesheet" href = "calendar.css">
-
-</head>
-<body>
-    <div class = "main">
-        <div class="sidebar">
-            <div class="logo">
-                <div class="logo-icon"></div>
-                <span class="logo-text">TrabaHero</span>
-            </div>
-            
-            <nav>
-                <a href="#" class="nav-item active">
-                    <div class="nav-icon"></div>
-                    Home
-                </a>
-                <a href="#" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Documents
-                    <span class="notification-badge">1</span>
-                </a>
-                <a href="quests.html" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Quests
-                    <span class="notification-badge">•</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Chat
-                    <span class="notification-badge">2</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Guild
-                </a>
-                <a href="#" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Profile
-                </a>
-            </nav>
-
-            <div class="go-pro">
-                <h3>Go Pro!</h3>
-                <p>Upgrades your plans to get VIP benefits</p>
-                <a href="pricing-plan.html" class="pro-btn">Get Started</a>
-            </div>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="calendar.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="sidebar">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          <span class="logo-text">TrabaHero</span>
         </div>
-        <div class="main-content">
-            <div class="header">
-                <div class="header-left">
-                    <div class="text-color">
-                        <h1>Hello User! </h1> 
-                    </div>
-                    <div class="header-tabs">
-                        <a href="/index.html" class="tab">Overview</a>
-                        <a href="#" class="tab active">Calendar</a>
-                        <a href="#" class="tab">Team Details</a>
-                        <a href="#" class="tab">Team Productivity Statistic</a>
-                        <a href="#" class="tab">Notifications</a>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <div class="user-profile">
-                        <div class="avatar"></div>
-                        <span>User's Name</span>
-                    </div>
-                    <button class="new-card-btn">+ New Card</button>
-                </div>
-            </div>
 
-            <div class="dashboard-grid">
-                <div class="calendar-container">
-                    <div class="calendar-header">
-                        <button class="nav-btn" id="prevBtn">‹</button>
-                        <h2 class="month-year" id="monthYear"></h2>
-                        <button class="nav-btn" id="nextBtn">›</button>
-                    </div>
-                    
-                <div class="calendar-grid" id="calendar"></div>
-                
-                <div class="today-info" id="todayInfo"></div>
-            </div>
+        <nav>
+          <a href="#" class="nav-item active">
+            <div class="nav-icon"></div>
+            Home
+          </a>
+          <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Documents
+            <span class="notification-badge">1</span>
+          </a>
+          <a href="quests.html" class="nav-item">
+            <div class="nav-icon"></div>
+            Quests
+            <span class="notification-badge">•</span>
+          </a>
+          <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Chat
+            <span class="notification-badge">2</span>
+          </a>
+          <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Guild
+          </a>
+          <a href="profile.html" class="nav-item">
+            <div class="nav-icon"></div>
+            Profile
+          </a>
+        </nav>
 
-                <div class="card projects-report">
-                    <div class="report-icon">📋</div>
-                    <h3>Projects Report</h3>
-                    <p>Get latest 10 projects reports</p>
-                </div>
-            </div>
+        <div class="go-pro">
+          <h3>Go Pro!</h3>
+          <p>Upgrades your plans to get VIP benefits</p>
+          <a href="pricing-plan.html" class="pro-btn">Get Started</a>
         </div>
+      </div>
+      <div class="main-content">
+        <div class="header">
+          <div class="header-left">
+            <div class="text-color">
+              <h1>Hello User!</h1>
+            </div>
+            <div class="header-tabs">
+              <a href="/index.html" class="tab">Overview</a>
+              <a href="#" class="tab active">Calendar</a>
+              <a href="#" class="tab">Team Details</a>
+              <a href="#" class="tab">Team Productivity Statistic</a>
+              <a href="#" class="tab">Notifications</a>
+            </div>
+          </div>
+          <div class="header-right">
+            <div class="user-profile">
+              <div class="avatar"></div>
+              <span>User's Name</span>
+            </div>
+            <button class="new-card-btn">+ New Card</button>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <button class="nav-btn" id="prevBtn">‹</button>
+              <h2 class="month-year" id="monthYear"></h2>
+              <button class="nav-btn" id="nextBtn">›</button>
+            </div>
+
+            <div class="calendar-grid" id="calendar"></div>
+
+            <div class="today-info" id="todayInfo"></div>
+          </div>
+
+          <div class="card projects-report">
+            <div class="report-icon">📋</div>
+            <h3>Projects Report</h3>
+            <p>Get latest 10 projects reports</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src = 'calendar.js'></script>
-</body>
+    <script src="calendar.js"></script>
+  </body>
 </html>

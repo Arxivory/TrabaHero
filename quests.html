@@ -1,143 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TrabaHero</title>
-    <link rel = "stylesheet" href = "style.css">
-    <link rel="stylesheet" href="quests.css">
-</head>
-<body>
-    <div class = "main">
-        <div class="sidebar">
-            <div class="logo">
-                <div class="logo-icon"></div>
-                <span class="logo-text">TrabaHero</span>
-            </div>
-            
-            <nav>
-                <a href="index.html" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Home
-                </a>
-                <a href="#" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Documents
-                    <span class="notification-badge">1</span>
-                </a>
-                <a href="#" class="nav-item active">
-                    <div class="nav-icon"></div>
-                    Quests
-                    <span class="notification-badge">•</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Chat
-                    <span class="notification-badge">2</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Guild
-                </a>
-                <a href="profile.html" class="nav-item">
-                    <div class="nav-icon"></div>
-                    Profile
-                </a>
-            </nav>
-
-            <div class="go-pro">
-                <h3>Go Pro!</h3>
-                <p>Upgrades your plans to get VIP benefits</p>
-                <a href="pricing-plan.html" class="pro-btn">Get Started</a>
-            </div>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="quests.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="sidebar">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          <span class="logo-text">TrabaHero</span>
         </div>
 
-        <div class="main-content">
-            <div class="header">
-                <div class="header-left">
-                    <div class="text-color">
-                        <h1>Your Quests</h1> 
-                    </div>
-                    <div class="controls">
-                        <button class="controls-button" id="addQuest">+ Add Personal Quest</button>
-                        <button class="controls-button" id="deleteQuest">Delete Personal Quest</button>
-                        <button class="controls-button">+</button>
-                        <button class="controls-button">-</button>
-                        <button class="controls-button">Reset View</button>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <div class="user-profile">
-                        <div class="avatar"></div>
-                        <span>User's Name</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card quests-map" id="container">
-                
-            </div>
+        <nav>
+          <a href="index.html" class="nav-item">
+            <div class="nav-icon"></div>
+            Home
+          </a>
+          <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Documents
+            <span class="notification-badge">1</span>
+          </a>
+          <a href="#" class="nav-item active">
+            <div class="nav-icon"></div>
+            Quests
+            <span class="notification-badge">•</span>
+          </a>
+          <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Chat
+            <span class="notification-badge">2</span>
+          </a>
+          <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Guild
+          </a>
+          <a href="profile.html" class="nav-item">
+            <div class="nav-icon"></div>
+            Profile
+          </a>
+          <a href="rewards.html" class="nav-item">
+            <div class="nav-icon"></div>
+            Profile
+          </a>
+        </nav>
+
+        <div class="go-pro">
+          <h3>Go Pro!</h3>
+          <p>Upgrades your plans to get VIP benefits</p>
+          <a href="pricing-plan.html" class="pro-btn">Get Started</a>
         </div>
+      </div>
+
+      <div class="main-content">
+        <div class="header">
+          <div class="header-left">
+            <div class="text-color">
+              <h1>Your Quests</h1>
+            </div>
+            <div class="controls">
+              <button class="controls-button" id="addQuest">
+                + Add Personal Quest
+              </button>
+              <button class="controls-button" id="deleteQuest">
+                Delete Personal Quest
+              </button>
+              <button class="controls-button">+</button>
+              <button class="controls-button">-</button>
+              <button class="controls-button">Reset View</button>
+            </div>
+          </div>
+          <div class="header-right">
+            <div class="user-profile">
+              <div class="avatar"></div>
+              <span>User's Name</span>
+            </div>
+          </div>
+        </div>
+        <div class="card quests-map" id="container"></div>
+      </div>
     </div>
 
     <div id="questModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="questTitle">Quest Title</h2>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div id="questDescription"></div>
-                <div class="tasks-container">
-                    <h3>Tasks:</h3>
-                    <div id="tasksList"></div>
-                </div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="questTitle">Quest Title</h2>
+          <span class="close">&times;</span>
         </div>
+        <div class="modal-body">
+          <div id="questDescription"></div>
+          <div class="tasks-container">
+            <h3>Tasks:</h3>
+            <div id="tasksList"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="addQuestModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Create Personal Quest</h2>
-                <span class="close" id="addQuestClose">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="addQuestForm">
-                    <div class="form-group">
-                        <label for="questTitleInput">Quest Title</label>
-                        <input type="text" id="questTitleInput" class="form-input" placeholder="Enter quest title" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="questDescInput">Description</label>
-                        <textarea id="questDescInput" class="form-input" placeholder="Describe your quest" rows="3" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Tasks</label>
-                        <div id="tasksInputContainer">
-                            <div class="task-input-group">
-                                <div class="task-input-column">
-                                    <input type="text" class="task-title-input" placeholder="Task title" required>
-                                    <input type="text" class="task-desc-input" placeholder="Task description">
-                                </div>
-                                <input type="date" class="task-date-input" title="Due date">
-                                <button type="button" class="remove-task-btn">×</button>
-                            </div>
-                        </div>
-                        <button type="button" id="addTaskBtn" class="add-task-btn">+ Add Task</button>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="cancel-btn" id="cancelQuestBtn">Cancel</button>
-                        <button type="submit" class="submit-btn">Create Quest</button>
-                    </div>
-                </form>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Create Personal Quest</h2>
+          <span class="close" id="addQuestClose">&times;</span>
         </div>
+        <div class="modal-body">
+          <form id="addQuestForm">
+            <div class="form-group">
+              <label for="questTitleInput">Quest Title</label>
+              <input
+                type="text"
+                id="questTitleInput"
+                class="form-input"
+                placeholder="Enter quest title"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="questDescInput">Description</label>
+              <textarea
+                id="questDescInput"
+                class="form-input"
+                placeholder="Describe your quest"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Tasks</label>
+              <div id="tasksInputContainer">
+                <div class="task-input-group">
+                  <div class="task-input-column">
+                    <input
+                      type="text"
+                      class="task-title-input"
+                      placeholder="Task title"
+                      required
+                    />
+                    <input
+                      type="text"
+                      class="task-desc-input"
+                      placeholder="Task description"
+                    />
+                  </div>
+                  <input type="date" class="task-date-input" title="Due date" />
+                  <button type="button" class="remove-task-btn">×</button>
+                </div>
+              </div>
+              <button type="button" id="addTaskBtn" class="add-task-btn">
+                + Add Task
+              </button>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="cancel-btn" id="cancelQuestBtn">
+                Cancel
+              </button>
+              <button type="submit" class="submit-btn">Create Quest</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="quests.js"></script>
-</body>
+  </body>
 </html>
