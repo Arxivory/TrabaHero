@@ -9,12 +9,12 @@ let panelContainer;
 const teamMembers = [
     {
         id: 1,
-        name: "You",
-        role: "UI/UX Designer",
-        class: "Tactician",
-        level: 15,
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-        isCurrentUser: true,
+        name: "Emma Johnson",
+        role: "Researcher",
+        class: "Scholar",
+        level: 12,
+        avatar: "assets/9.png",
+        isCurrentUser: false,
         position: { x: -7, y: 3, z: 15 }
     },
     {
@@ -23,18 +23,18 @@ const teamMembers = [
         role: "Developer",
         class: "Strategist",
         level: 18,
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+        avatar: "assets/6.png",
         isCurrentUser: false,
         position: { x: 2, y: 6, z: -7 }
     },
     {
         id: 3,
-        name: "Emma Johnson",
-        role: "Researcher",
-        class: "Scholar",
-        level: 12,
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-        isCurrentUser: false,
+        name: "You",
+        role: "UI/UX Designer",
+        class: "Tactician",
+        level: 15,
+        avatar: "assets/user-profile.jpg",
+        isCurrentUser: true,
         position: { x: -1, y: -2, z: 7 }
     },
     {
@@ -43,7 +43,7 @@ const teamMembers = [
         role: "Product Manager",
         class: "Tactician",
         level: 16,
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
+        avatar: "assets/10.png",
         isCurrentUser: false,
         position: { x: 20, y: 7, z: -4 }
     }
