@@ -7,6 +7,8 @@ let zoomLevel = 1;
 const minZoom = 0.5;
 const maxZoom = 3;
 
+let totalXP = 0;
+
 const questsData = [
     {
         id: 1,
@@ -699,6 +701,7 @@ function toggleTask(questId, taskId) {
     const quest = questsData.find(q => q.id === questId);
     const task = quest.tasks.find(t => t.id === taskId);
     
+    const wasCompleted = task.completed;
     task.completed = !task.completed;
     
     updateQuestPanel(quest);
@@ -706,8 +709,25 @@ function toggleTask(questId, taskId) {
     const taskElement = document.querySelector(`[data-quest-id="${questId}"][data-task-id="${taskId}"]`).closest('.task-item');
     if (task.completed) {
         taskElement.classList.add('task-completed');
+        
+        const checkbox = taskElement.querySelector('.task-checkbox');
+        showXPAnimation(checkbox, 5);
+        
     } else {
         taskElement.classList.remove('task-completed');
+    }
+    
+    const completedTasks = quest.tasks.filter(t => t.completed).length;
+    const totalTasks = quest.tasks.length;
+    const questCompleted = completedTasks === totalTasks && !wasCompleted;
+    
+    if (questCompleted) {
+        const questPanel = document.querySelector(`[data-quest-id="${questId}"]`);
+        if (questPanel) {
+            setTimeout(() => {
+                showQuestCompletionXP(questPanel);
+            }, 800);
+        }
     }
     
     console.log(`Task ${taskId} in quest ${questId} marked as ${task.completed ? 'completed' : 'incomplete'}`);
@@ -998,6 +1018,60 @@ function deletePersonalQuest(questId) {
         }
         
         console.log('Personal quest deleted:', questId);
+    }
+}
+
+function showXPAnimation(element, xpAmount = 5, questCompleted = false) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    const xpElement = document.createElement('div');
+    xpElement.className = 'xp-animation';
+    xpElement.textContent = `+${xpAmount} XP`;
+    xpElement.style.left = centerX + 'px';
+    xpElement.style.top = centerY + 'px';
+
+    addXP(xpAmount);
+    
+    document.body.appendChild(xpElement);
+    
+    setTimeout(() => {
+        if (xpElement.parentNode) {
+            xpElement.parentNode.removeChild(xpElement);
+        }
+    }, 2000);
+    
+    if (questCompleted) {
+        setTimeout(() => {
+            showQuestCompletionXP(element);
+        }, 500);
+    }
+}
+
+function showQuestCompletionXP(questPanel) {
+    const questXP = document.createElement('div');
+    questXP.className = 'quest-panel-xp';
+    questXP.textContent = '+20 XP BONUS!';
+    
+    if (getComputedStyle(questPanel).position === 'static') {
+        questPanel.style.position = 'relative';
+    }
+    
+    questPanel.appendChild(questXP);
+    
+    setTimeout(() => {
+        if (questXP.parentNode) {
+            questXP.parentNode.removeChild(questXP);
+        }
+    }, 1500);
+}
+
+function addXP(amount) {
+    totalXP += amount;
+    const xpDisplay = document.getElementById('totalXP');
+    if (xpDisplay) {
+        xpDisplay.textContent = totalXP;
     }
 }
 
